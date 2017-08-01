@@ -31,8 +31,6 @@ import configparser
 from guessit import guessit
 
 
-
-
 def renameFiles(rootdir, dryrun=False):
     ''' Will traverse the directory and find all folders and files that can be
         renamed to a movie name.
