@@ -28,8 +28,19 @@ import argparse
 import re
 import configparser
 
+
 from guessit import guessit
 
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 def renameFiles(rootdir, dryrun=False):
     ''' Will traverse the directory and find all folders and files that can be
@@ -44,6 +55,7 @@ def renameFiles(rootdir, dryrun=False):
     '''
     # First pass. Rename files
     # We start from root and work ourself down the subdirectories.
+    print(bcolors.BOLD + '= Working my way through the files =' + bcolors.ENDC)
     for dir_path, subpaths, files in os.walk(rootdir):
         for file in files:
             # Extract the extention of the file so we can pick the ones we want
@@ -53,8 +65,7 @@ def renameFiles(rootdir, dryrun=False):
                 # Check if we are doing a dry run
                 if dryrun:
                     # Dry run. Only print out the result. DON'T rename
-                    print('Decoding file: ' + file)
-                    print(guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')')
+                    print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')')
                 else:
                     # We can rename. Guess the name and rename.
                     new_name = guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')'
@@ -63,6 +74,7 @@ def renameFiles(rootdir, dryrun=False):
                     os.rename(src, dest)
 
     # Second pass, rename the folders
+    print(bcolors.BOLD + '\n= Working my way through the folders =' + bcolors.ENDC)
     for dir_path, subpaths, files in os.walk(rootdir):
         for path in subpaths:
             # Only match on directories that start with a Word.
@@ -70,12 +82,10 @@ def renameFiles(rootdir, dryrun=False):
             if re.match('^\W.*', path) is None:
                 # Dry run or not?
                 if dryrun:
-                    print('Decoding path: ' + path)
                     new_name = guessit(path)['title'] + ' (' + str(guessit(path)['year']) + ')'
                     src = dir_path + path
                     dest = dir_path + new_name
-                    print('Path source: ' + src)
-                    print('Path destination: ' + dest)
+                    print('    ' + src + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + dest)
                 else:
                     new_name = guessit(path)['title'] + ' (' + str(guessit(path)['year']) + ')'
                     src = dir_path + '/' + path
