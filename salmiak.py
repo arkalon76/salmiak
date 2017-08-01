@@ -68,19 +68,21 @@ def renameFiles(rootdir, dryrun=False):
             # Extract the extention of the file so we can pick the ones we want
             extension = os.path.splitext(file)[1].lower()
             # Select the files we are intrested in
-            if extension in ['.mkv', '.mp4', '.avi', '.mov']:
-                # Check if we are doing a dry run
-                if dryrun:
-                    # Dry run. Only print out the result. DON'T rename
-                    print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
-                else:
-                    # We can rename. Guess the name and rename.
-                    new_name = guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')'
-                    src = dir_path + '/' + file
-                    dest = dir_path + '/' + new_name+extension
-                    print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
-                    os.rename(src, dest)
-
+            try:
+                if extension in ['.mkv', '.mp4', '.avi', '.mov']:
+                    # Check if we are doing a dry run
+                    if dryrun:
+                        # Dry run. Only print out the result. DON'T rename
+                        print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
+                    else:
+                        # We can rename. Guess the name and rename.
+                        new_name = guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')'
+                        src = dir_path + '/' + file
+                        dest = dir_path + '/' + new_name+extension
+                        print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
+                        os.rename(src, dest)
+            except KeyError:
+                print(bcolors.FAIL + '    ' + file + bcolors.ENDC + ' <== Is this really a movie?')
     # Second pass, rename the folders
     print(bcolors.BOLD + '\n= Working my way through the folders =' + bcolors.ENDC)
     for dir_path, subpaths, files in os.walk(rootdir):
@@ -102,7 +104,7 @@ def renameFiles(rootdir, dryrun=False):
                     os.rename(src, dest)
             else:
                 # Let's assume this isn't a folder we are intrested in
-                print(bcolors.FAIL + 'This folder is not a movie folder, I guess.. : ' + path + bcolors.ENDC)
+                print(bcolors.FAIL + '    ' + path + bcolors.ENDC + ' <== What is this path? Really a Movie?')
 
 
 if __name__ == "__main__":
