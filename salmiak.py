@@ -82,6 +82,7 @@ def renameFiles(rootdir, dryrun=False):
                         print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
                         os.rename(src, dest)
             except KeyError:
+                # We couldn't find either the year or the title. Let the user fix this
                 print(bcolors.FAIL + '    ' + file + bcolors.ENDC + ' <== Is this really a movie?')
     # Second pass, rename the folders
     print(bcolors.BOLD + '\n= Working my way through the folders =' + bcolors.ENDC)
