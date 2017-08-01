@@ -53,7 +53,7 @@ def renameFiles(rootdir, dryrun=False):
                 # Check if we are doing a dry run
                 if dryrun:
                     # Dry run. Only print out the result. DON'T rename
-                    print('Decoding: ' + file)
+                    print('Decoding file: ' + file)
                     print(guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')')
                 else:
                     # We can rename. Guess the name and rename.
@@ -70,7 +70,7 @@ def renameFiles(rootdir, dryrun=False):
             if re.match('^\W.*', path) is None:
                 # Dry run or not?
                 if dryrun:
-                    print('Decoding: ' + path)
+                    print('Decoding path: ' + path)
                     new_name = guessit(path)['title'] + ' (' + str(guessit(path)['year']) + ')'
                     src = dir_path + path
                     dest = dir_path + new_name
