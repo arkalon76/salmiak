@@ -49,7 +49,8 @@ ACCEPTED_EXTENTIONS = ['.mkv', '.mp4', '.avi', '.mov']
 def isValidMovieFile(file):
     # Extract the extention of the file so we can pick the ones we want
     extension = os.path.splitext(file)[1].lower()
-    if extension in ACCEPTED_EXTENTIONS:
+    fileguess = guessit(file)
+    if extension in ACCEPTED_EXTENTIONS and ('title' in fileguess) and ('year' in fileguess):
         return True
     else:
         return False
@@ -65,20 +66,17 @@ def isValidMoviePath(path):
 def renameFile(file):
     # Extract the extention of the file so we can pick the ones we want
     extension = os.path.splitext(file)[1].lower()
-    try:
-        if DRYRUN:
-            # Dry run. Only print out the result. DON'T rename
-            print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
-        else:
-            # We can rename. Guess the name and rename.
-            new_name = guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')'
-            src = dir_path + '/' + file
-            dest = dir_path + '/' + new_name+extension
-            print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
-            os.rename(src, dest)
-    except KeyError:
-        # We couldn't find either the year or the title. Let the user fix this
-        print(bcolors.FAIL + '    ' + file + bcolors.ENDC + ' <== Is this really a movie?')
+    if DRYRUN:
+        # Dry run. Only print out the result. DON'T rename
+        print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
+    else:
+        # We can rename. Guess the name and rename.
+        new_name = guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')'
+        src = dir_path + '/' + file
+        dest = dir_path + '/' + new_name+extension
+        print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
+        os.rename(src, dest)
+
 
 
 def renamePath(dir_path, path):
