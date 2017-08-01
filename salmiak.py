@@ -53,6 +53,13 @@ def renameFiles(rootdir, dryrun=False):
                   result would be
 
     '''
+
+    # Warn the user if it's a dry run
+    if dryrun:
+        print('\n')
+        print(bcolors.UNDERLINE + 'NOTE: This is a dry run!' + bcolors.ENDC)
+        print('\n')
+
     # First pass. Rename files
     # We start from root and work ourself down the subdirectories.
     print(bcolors.BOLD + '= Working my way through the files =' + bcolors.ENDC)
@@ -65,12 +72,13 @@ def renameFiles(rootdir, dryrun=False):
                 # Check if we are doing a dry run
                 if dryrun:
                     # Dry run. Only print out the result. DON'T rename
-                    print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')')
+                    print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
                 else:
                     # We can rename. Guess the name and rename.
                     new_name = guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')'
                     src = dir_path + '/' + file
                     dest = dir_path + '/' + new_name+extension
+                    print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
                     os.rename(src, dest)
 
     # Second pass, rename the folders
@@ -88,12 +96,13 @@ def renameFiles(rootdir, dryrun=False):
                     print('    ' + src + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + dest)
                 else:
                     new_name = guessit(path)['title'] + ' (' + str(guessit(path)['year']) + ')'
-                    src = dir_path + '/' + path
-                    dest = dir_path + '/' + new_name
+                    src = dir_path + path
+                    dest = dir_path + new_name
+                    print('    ' + src + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + dest)
                     os.rename(src, dest)
             else:
                 # Let's assume this isn't a folder we are intrested in
-                print('This folder is not a movie folder, I guess.. : ' + path)
+                print(bcolors.FAIL + 'This folder is not a movie folder, I guess.. : ' + path + bcolors.ENDC)
 
 
 if __name__ == "__main__":
