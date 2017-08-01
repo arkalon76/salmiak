@@ -1,2 +1,2 @@
-# durian
-Movie renamer
+# Salmiak
+The Movie renamer
