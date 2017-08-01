@@ -20,6 +20,7 @@ def test_valid_filename(test_file, expected):
     ('Looney.Tunes.Volume.2.1936-1959.1080p.BluRay.REMUX.AVC.DD1.0-RARBG', True),
     ('.git', False),
     ('@download', False),
+    ('Movie.Title', False),
 ])
 
 

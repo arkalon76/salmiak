@@ -57,7 +57,8 @@ def isValidMovieFile(file):
 
 
 def isValidMoviePath(path):
-    if re.match('^\W.*', path) is None:
+    pathguess = guessit(path)
+    if re.match('^\W.*', path) is None and ('title' in pathguess) and ('year' in pathguess):
         return True
     else:
         return False
