@@ -74,7 +74,7 @@ def renameFile(file):
         # We can rename. Guess the name and rename.
         new_name = guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')'
         src = dir_path + '/' + file
-        dest = dir_path + '/' + new_name+extension
+        dest = dir_path + '/' + new_name + extension
         print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
         os.rename(src, dest)
 
@@ -94,7 +94,7 @@ def renamePath(dir_path, path):
         os.rename(src, dest)
 
 
-if __name__ == "__main__":
+def main():
 
     # Setup the Argument Parser
     parser = argparse.ArgumentParser(description='Rename files and folders to fit Plex')
