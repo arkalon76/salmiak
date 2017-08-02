@@ -5,7 +5,7 @@ setup(name='salmiak',
       description='The easiest movie file renamer this side of github',
       long_description="Look, it's not very powerful, but it's simple. And sometimes that's enough",
       classifiers=[
-        'Development Status  :: 4 - Beta',
+        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 2.7',
