@@ -1,6 +1,11 @@
 # Salmiak
 A very VERY simple tool to rename all files and folders so that they play nice with Plex.
 
+## How to install
+```
+$ pip install salmiak
+```
+
 ## How to use?
 
 ```
