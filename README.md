@@ -5,6 +5,10 @@ A very VERY simple tool to rename all files and folders so that they play nice w
 ```
 $ pip install salmiak
 ```
+If you get a permissions error then run the following command instead
+```
+$ sudo -H pip install salmiak
+```
 
 ## How to use?
 
