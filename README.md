@@ -3,6 +3,9 @@ A very VERY simple tool to rename all files and folders so that they play nice w
 
 ## Status
 ![Build Status](https://travis-ci.org/arkalon76/salmiak.svg?branch=master)
+[![Code Climate](https://codeclimate.com/github/arkalon76/salmiak/badges/gpa.svg)](https://codeclimate.com/github/arkalon76/salmiak)
+[![Test Coverage](https://codeclimate.com/github/arkalon76/salmiak/badges/coverage.svg)](https://codeclimate.com/github/arkalon76/salmiak/coverage)
+
 
 ## How to install
 ```
