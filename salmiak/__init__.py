@@ -67,30 +67,24 @@ def isValidMoviePath(path):
 def renameFile(file):
     # Extract the extention of the file so we can pick the ones we want
     extension = os.path.splitext(file)[1].lower()
-    if DRYRUN:
-        # Dry run. Only print out the result. DON'T rename
-        print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
-    else:
-        # We can rename. Guess the name and rename.
+    print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
+
+    if not DRYRUN:
         new_name = guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')'
         src = dir_path + '/' + file
         dest = dir_path + '/' + new_name + extension
-        print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
         os.rename(src, dest)
 
 
-
 def renamePath(dir_path, path):
-    if DRYRUN:
-        new_name = guessit(path)['title'] + ' (' + str(guessit(path)['year']) + ')'
+    new_name = guessit(path)['title'] + ' (' + str(guessit(path)['year']) + ')'
+    src = dir_path + path
+    dest = dir_path + new_name
+    print('    ' + src + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + dest)
+
+    if not DRYRUN:
         src = dir_path + path
         dest = dir_path + new_name
-        print('    ' + src + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + dest)
-    else:
-        new_name = guessit(path)['title'] + ' (' + str(guessit(path)['year']) + ')'
-        src = dir_path + path
-        dest = dir_path + new_name
-        print('    ' + src + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + dest)
         os.rename(src, dest)
 
 
