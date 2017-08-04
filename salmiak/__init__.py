@@ -81,7 +81,7 @@ def parseFiles(rootdir):
     printInfoMessage('= Working my way through the files =')
     for dir_path, subpaths, files in os.walk(rootdir):
         for file in files:
-            if isValidMovieFile(file):
+            if isValidPath(dir_path + '/' + file):
                 renameFile(dir_path, file)
             else:
                 # Let's assume this isn't a folder we are intrested in
@@ -92,55 +92,33 @@ def parseFiles(rootdir):
         for path in subpaths:
             # Only match on directories that start with a Word.
             # This to avoid some system directories (Like .git, @EAB and so on)
-            if isValidMoviePath(path):
+            if isValidPath(path):
                 renamePath(dir_path, path)
             else:
                 # Let's assume this isn't a folder we are intrested in
                 printFailureMessage(file + ' <== Is this really a movie folder?')
 
 
-# def parseFolders(rootdir):
-#     """ Will walk all the folders under rootdir and, if valid, rename them.
-#         If Dry run flag is set then we will only print out, not actually rename.
-#
-#         Parameters:
-#         -----------
-#         rootdir: The directory from where we start the walk.
-#     """
-#     # Second pass, rename the folders
-#     print(bcolors.BOLD + '\n= Working my way through the folders =' + bcolors.ENDC)
-#     for dir_path, subpaths, files in os.walk(rootdir):
-
-
-
-def isValidMovieFile(file):
-    """ Checks if a file has a Title, year and match extentions we accept.
-
-        Parameters:
-        -----------
-        file: The media file we want to validate
-    """
-    # Extract the extention of the file so we can pick the ones we want
-    extension = os.path.splitext(file)[1].lower()
-    fileguess = guessit(file)
-    if extension in ACCEPTED_EXTENTIONS and ('title' in fileguess) and ('year' in fileguess):
-        return True
+def isValidPath(path):
+    print(os.path.abspath(path))
+    if os.path.isfile(path):
+        # Extract the filename from the path
+        filename = os.path.basename(path)
+        # Extract the extention from the filename
+        extension = os.path.splitext(filename)[1].lower()
+        # Let's see if we can get the title and year from the filename
+        fileguess = guessit(filename)
+        if extension in ACCEPTED_EXTENTIONS and ('title' in fileguess) and ('year' in fileguess):
+            return True
+        else:
+            return False
     else:
-        return False
+        pathguess = guessit(path)
+        if re.match('^\W.*', path) is None and ('title' in pathguess) and ('year' in pathguess):
+            return True
+        else:
+            return False
 
-
-def isValidMoviePath(path):
-    """ Checks if a path has a Title, year and start with a normal character.
-
-        Parameters:
-        -----------
-        file: The media file we want to validate
-    """
-    pathguess = guessit(path)
-    if re.match('^\W.*', path) is None and ('title' in pathguess) and ('year' in pathguess):
-        return True
-    else:
-        return False
 
 
 def renameFile(dir_path, file):
@@ -152,6 +130,7 @@ def renameFile(dir_path, file):
         dir_path: Full path to the file
         file:     File name
     """
+
     # Extract the extention of the file so we can pick the ones we want
     extension = os.path.splitext(file)[1].lower()
     print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
