@@ -125,7 +125,6 @@ def isValidPath(path):
             return False
 
 
-
 def renameFile(dir_path, file):
     """ Renames a file to match a standard Plex format { Title (year) }.
         If the Dry run flag is set then we will just print the text but not make the move.
