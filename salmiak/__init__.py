@@ -46,6 +46,32 @@ class bcolors:
 ACCEPTED_EXTENTIONS = ['.mkv', '.mp4', '.avi', '.mov']
 
 
+def parseFiles(rootdir):
+    # First pass. Rename files
+    # We start from root and work ourself down the subdirectories.
+    print(bcolors.BOLD + '= Working my way through the files =' + bcolors.ENDC)
+    for dir_path, subpaths, files in os.walk(rootdir):
+        for file in files:
+            if isValidMovieFile(file):
+                renameFile(dir_path, file)
+            else:
+                pass
+
+
+def parseFolders(rootdir):
+    # Second pass, rename the folders
+    print(bcolors.BOLD + '\n= Working my way through the folders =' + bcolors.ENDC)
+    for dir_path, subpaths, files in os.walk(rootdir):
+        for path in subpaths:
+            # Only match on directories that start with a Word.
+            # This to avoid some system directories (Like .git, @EAB and so on)
+            if isValidMoviePath(path):
+                renamePath(dir_path, path)
+            else:
+                # Let's assume this isn't a folder we are intrested in
+                print(bcolors.FAIL + '    ' + path + bcolors.ENDC + ' <== What is this path? Really a Movie?')
+
+
 def isValidMovieFile(file):
     # Extract the extention of the file so we can pick the ones we want
     extension = os.path.splitext(file)[1].lower()
@@ -108,24 +134,6 @@ def main():
         print(bcolors.UNDERLINE + 'NOTE: This is a dry run!' + bcolors.ENDC)
         print('\n')
 
-    # First pass. Rename files
-    # We start from root and work ourself down the subdirectories.
-    print(bcolors.BOLD + '= Working my way through the files =' + bcolors.ENDC)
-    for dir_path, subpaths, files in os.walk(rootdir):
-        for file in files:
-            if isValidMovieFile(file):
-                renameFile(dir_path, file)
-            else:
-                pass
+    parseFiles(rootdir)
 
-    # Second pass, rename the folders
-    print(bcolors.BOLD + '\n= Working my way through the folders =' + bcolors.ENDC)
-    for dir_path, subpaths, files in os.walk(rootdir):
-        for path in subpaths:
-            # Only match on directories that start with a Word.
-            # This to avoid some system directories (Like .git, @EAB and so on)
-            if isValidMoviePath(path):
-                renamePath(dir_path, path)
-            else:
-                # Let's assume this isn't a folder we are intrested in
-                print(bcolors.FAIL + '    ' + path + bcolors.ENDC + ' <== What is this path? Really a Movie?')
+    parseFolders(rootdir)
