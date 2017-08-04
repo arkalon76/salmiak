@@ -18,6 +18,17 @@ $ sudo -H pip install salmiak
 
 ## How to use?
 
+### Dry run (Don't change the files)
+```
+$ salmiak -d /path/to/movies
+```
+
+### Rename the files
+```
+$ salmiak /path/to/movies
+```
+
+### Help!
 ```
 $ python salmiak.py -h
 usage: salmiak.py [-h] [-d] media
