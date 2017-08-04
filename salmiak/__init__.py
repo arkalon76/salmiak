@@ -64,7 +64,7 @@ def isValidMoviePath(path):
         return False
 
 
-def renameFile(file):
+def renameFile(dir_path, file):
     # Extract the extention of the file so we can pick the ones we want
     extension = os.path.splitext(file)[1].lower()
     print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
@@ -114,7 +114,7 @@ def main():
     for dir_path, subpaths, files in os.walk(rootdir):
         for file in files:
             if isValidMovieFile(file):
-                renameFile(file)
+                renameFile(dir_path, file)
             else:
                 pass
 
