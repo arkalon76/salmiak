@@ -33,6 +33,8 @@ from guessit import guessit
 
 
 class bcolors:
+    """ Allows for us to give some colour to the output text
+    """
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -47,6 +49,13 @@ ACCEPTED_EXTENTIONS = ['.mkv', '.mp4', '.avi', '.mov']
 
 
 def parseFiles(rootdir):
+    """ Will walk all the files under rootdir and, if valid, rename them.
+        If Dry run flag is set then we will only print out, not actually rename.
+
+        Parameters:
+        -----------
+        rootdir: The directory from where we start the walk.
+    """
     # First pass. Rename files
     # We start from root and work ourself down the subdirectories.
     print(bcolors.BOLD + '= Working my way through the files =' + bcolors.ENDC)
@@ -55,10 +64,18 @@ def parseFiles(rootdir):
             if isValidMovieFile(file):
                 renameFile(dir_path, file)
             else:
-                pass
+                # Let's assume this isn't a folder we are intrested in
+                print(bcolors.FAIL + '    ' + file + bcolors.ENDC + ' <== What is this file? Really a Movie?')
 
 
 def parseFolders(rootdir):
+    """ Will walk all the folders under rootdir and, if valid, rename them.
+        If Dry run flag is set then we will only print out, not actually rename.
+
+        Parameters:
+        -----------
+        rootdir: The directory from where we start the walk.
+    """
     # Second pass, rename the folders
     print(bcolors.BOLD + '\n= Working my way through the folders =' + bcolors.ENDC)
     for dir_path, subpaths, files in os.walk(rootdir):
@@ -73,6 +90,12 @@ def parseFolders(rootdir):
 
 
 def isValidMovieFile(file):
+    """ Checks if a file has a Title, year and match extentions we accept.
+
+        Parameters:
+        -----------
+        file: The media file we want to validate
+    """
     # Extract the extention of the file so we can pick the ones we want
     extension = os.path.splitext(file)[1].lower()
     fileguess = guessit(file)
@@ -83,6 +106,12 @@ def isValidMovieFile(file):
 
 
 def isValidMoviePath(path):
+    """ Checks if a path has a Title, year and start with a normal character.
+
+        Parameters:
+        -----------
+        file: The media file we want to validate
+    """
     pathguess = guessit(path)
     if re.match('^\W.*', path) is None and ('title' in pathguess) and ('year' in pathguess):
         return True
@@ -91,6 +120,14 @@ def isValidMoviePath(path):
 
 
 def renameFile(dir_path, file):
+    """ Renames a file to match a standard Plex format { Title (year) }.
+        If the Dry run flag is set then we will just print the text but not make the move.
+
+        Parameters:
+        -----------
+        dir_path: Full path to the file
+        file:     File name
+    """
     # Extract the extention of the file so we can pick the ones we want
     extension = os.path.splitext(file)[1].lower()
     print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
@@ -103,6 +140,14 @@ def renameFile(dir_path, file):
 
 
 def renamePath(dir_path, path):
+    """ Renames a folder to match a standard Plex format { Title (year) }.
+        If the Dry run flag is set then we will just print the text but not make the move.
+
+        Parameters:
+        -----------
+        dir_path: Full path to the related folder
+        path:     Folder name
+    """
     new_name = guessit(path)['title'] + ' (' + str(guessit(path)['year']) + ')'
     src = dir_path + path
     dest = dir_path + new_name
@@ -115,6 +160,8 @@ def renamePath(dir_path, path):
 
 
 def main():
+    """ Here is where the magic happens
+    """
 
     # Setup the Argument Parser
     parser = argparse.ArgumentParser(description='Rename files and folders to fit Plex')
@@ -125,6 +172,7 @@ def main():
     # Extract the rootpath
     rootdir = args.media
 
+    # Set if we are doing a dry run our not
     global DRYRUN
     DRYRUN = args.dryrun
 
@@ -134,6 +182,7 @@ def main():
         print(bcolors.UNDERLINE + 'NOTE: This is a dry run!' + bcolors.ENDC)
         print('\n')
 
+    # Walk through the root dir and look at all the files
     parseFiles(rootdir)
-
+    # Walk through the root dir and look at all the folders
     parseFolders(rootdir)
