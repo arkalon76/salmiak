@@ -100,7 +100,12 @@ def parseFiles(rootdir):
 
 
 def isValidPath(path):
-    print(os.path.abspath(path))
+    """ Validates a path to make sure that it can be converted to a Title (year) format.
+
+        Parameters:
+        -----------
+        path: The full path to the folder or file
+    """
     if os.path.isfile(path):
         # Extract the filename from the path
         filename = os.path.basename(path)
