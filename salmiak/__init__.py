@@ -48,6 +48,26 @@ class bcolors:
 ACCEPTED_EXTENTIONS = ['.mkv', '.mp4', '.avi', '.mov']
 
 
+def printInfoMessage(message):
+    """ Prints out a information message for the user
+
+        Parameters:
+        -----------
+        message: Message to be displayed to the user
+    """
+    print(bcolors.HEADER + message + bcolors.ENDC)
+
+
+def printFailureMessage(message):
+    """ Prints out a error message for the user
+
+        Parameters:
+        -----------
+        message: Message to be displayed to the user
+    """
+    print(bcolors.FAIL + '    ' + 'Warning: ' + bcolors.ENDC + message)
+
+
 def parseFiles(rootdir):
     """ Will walk all the files under rootdir and, if valid, rename them.
         If Dry run flag is set then we will only print out, not actually rename.
@@ -58,26 +78,16 @@ def parseFiles(rootdir):
     """
     # First pass. Rename files
     # We start from root and work ourself down the subdirectories.
-    print(bcolors.BOLD + '= Working my way through the files =' + bcolors.ENDC)
+    printInfoMessage('= Working my way through the files =')
     for dir_path, subpaths, files in os.walk(rootdir):
         for file in files:
             if isValidMovieFile(file):
                 renameFile(dir_path, file)
             else:
                 # Let's assume this isn't a folder we are intrested in
-                print(bcolors.FAIL + '    ' + file + bcolors.ENDC + ' <== What is this file? Really a Movie?')
+                printFailureMessage(file + ' <== What is this file? Is it really a movie?')
 
-
-def parseFolders(rootdir):
-    """ Will walk all the folders under rootdir and, if valid, rename them.
-        If Dry run flag is set then we will only print out, not actually rename.
-
-        Parameters:
-        -----------
-        rootdir: The directory from where we start the walk.
-    """
-    # Second pass, rename the folders
-    print(bcolors.BOLD + '\n= Working my way through the folders =' + bcolors.ENDC)
+    printInfoMessage('\n= Working my way through the folders =')
     for dir_path, subpaths, files in os.walk(rootdir):
         for path in subpaths:
             # Only match on directories that start with a Word.
@@ -86,7 +96,21 @@ def parseFolders(rootdir):
                 renamePath(dir_path, path)
             else:
                 # Let's assume this isn't a folder we are intrested in
-                print(bcolors.FAIL + '    ' + path + bcolors.ENDC + ' <== What is this path? Really a Movie?')
+                printFailureMessage(file + ' <== Is this really a movie folder?')
+
+
+# def parseFolders(rootdir):
+#     """ Will walk all the folders under rootdir and, if valid, rename them.
+#         If Dry run flag is set then we will only print out, not actually rename.
+#
+#         Parameters:
+#         -----------
+#         rootdir: The directory from where we start the walk.
+#     """
+#     # Second pass, rename the folders
+#     print(bcolors.BOLD + '\n= Working my way through the folders =' + bcolors.ENDC)
+#     for dir_path, subpaths, files in os.walk(rootdir):
+
 
 
 def isValidMovieFile(file):
@@ -149,13 +173,11 @@ def renamePath(dir_path, path):
         path:     Folder name
     """
     new_name = guessit(path)['title'] + ' (' + str(guessit(path)['year']) + ')'
-    src = dir_path + path
-    dest = dir_path + new_name
+    src = dir_path + '/' + path
+    dest = dir_path + '/' + new_name
     print('    ' + src + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + dest)
 
     if not DRYRUN:
-        src = dir_path + path
-        dest = dir_path + new_name
         os.rename(src, dest)
 
 
@@ -185,4 +207,4 @@ def main():
     # Walk through the root dir and look at all the files
     parseFiles(rootdir)
     # Walk through the root dir and look at all the folders
-    parseFolders(rootdir)
+    # parseFolders(rootdir)
