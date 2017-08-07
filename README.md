@@ -1,10 +1,12 @@
 # Salmiak
-A very VERY simple tool to rename all files and folders so that they play nice with Plex.
+Salmiak is the Nokia 3310 of file renaming apps.
+
+A very VERY simple tool to rename all files and folders so that they play nice with Plex. There are many tools like this, however, Salmiak tries to remove complexity by just offering the basics.
 
 ## Status
-[![Build Status](https://travis-ci.org/arkalon76/salmiak.svg?branch=master)](https://travis-ci.org/arkalon76/salmiak)
+![Build Status](https://travis-ci.org/arkalon76/salmiak.svg?branch=master)
 [![Code Climate](https://codeclimate.com/github/arkalon76/salmiak/badges/gpa.svg)](https://codeclimate.com/github/arkalon76/salmiak)
-[![Coverage Status](https://coveralls.io/repos/github/arkalon76/salmiak/badge.svg?branch=master)](https://coveralls.io/github/arkalon76/salmiak?branch=master)
+[![Test Coverage](https://codeclimate.com/github/arkalon76/salmiak/badges/coverage.svg)](https://codeclimate.com/github/arkalon76/salmiak/coverage)
 
 
 ## How to install
@@ -20,13 +22,17 @@ $ sudo -H pip install salmiak
 
 ### Dry run (Don't change the files)
 ```
-$ salmiak -d /path/to/movies
+$ salmiak -d /path/to/media_files
 ```
 
 ### Rename the files
 ```
-$ salmiak /path/to/movies
+$ salmiak /path/to/media_files
 ```
+### Limitations
+TV Shows are still in somewhat of a beta. I've not tested this very well so please submit any filenames that you would like to add to my test for support.
+__Note:
+I only support TV Show files right now. Folders are bit tricky so I need to give that a bit more thought before I can support it__
 
 ### Help!
 ```
