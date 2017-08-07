@@ -21,10 +21,12 @@ setup(name='salmiak',
         'guessit',
       ],
       test_suite='tests',
-      tests_require=['pytest'],
-      entry_points={
-      'console_scripts': [
-            'salmiak = salmiak:main',
-        ],
-      },
+      tests_require=['pytest',
+                     'pytest',
+                     'pytest-pep8',
+                     'pytest-cov'],
+      entry_points={'console_scripts': [
+                        'salmiak = salmiak:main',
+                        ],
+                    },
       zip_safe=False)
