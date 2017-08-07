@@ -22,6 +22,9 @@ def test_valid_filename(test_file, expected, tmpdir):
     ('Looney.Tunes.Volume.2.1936-1959.1080p.BluRay.REMUX.AVC.DD1.0-RARBG', True),
     ('@download', False),
     ('Movie.Title', False),
+    ('.ssh.2001', False),
+    ('Brother.Where.Art.Thou.2000.1080p.BluRay.X264-AMIABLE', True),
+    ('.Brother.Where.Art.Thou.2000.1080p.BluRay.X264-AMIABLE', False)
 ])
 
 

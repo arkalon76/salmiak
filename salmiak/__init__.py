@@ -118,9 +118,9 @@ def isValidPath(path):
         else:
             return False
     else:
-        pathname = os.path.basename(path)
-        pathguess = guessit(pathname)
-        if re.match('^\W.*', pathname) is None and ('title' in pathguess) and ('year' in pathguess):
+        foldername = os.path.basename(path)
+        pathguess = guessit(foldername)
+        if re.match('^\W.*', foldername) is None and ('title' in pathguess) and ('year' in pathguess):
             return True
         else:
             return False
