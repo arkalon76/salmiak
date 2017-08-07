@@ -1,5 +1,5 @@
 guessit
-pytest
 configparser
+pytest
 pytest-cov
 pytest-pep8

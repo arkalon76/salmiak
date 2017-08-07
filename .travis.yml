@@ -1,3 +1,7 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=4828a3d18573b5cf81804a2ec7ec16be7c1d5c02cbb67be26c068fa5849b0506
+    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 language: python
 python:
   - "2.7"
@@ -10,5 +14,11 @@ python:
   - "nightly" # currently points to 3.7-dev
 # command to install dependencies
 install: "pip install -r requirements.txt"
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
 # command to run tests
-script: pytest
+script:
+  - cc-test-reporter before-build
+  - pytest
+  - cc-test-reporter after-build --exit-code $?
