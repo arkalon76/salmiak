@@ -147,8 +147,6 @@ def buildPlexTVShowName(guessDict):
         episode = 'E' + str(guessDict['episode']) if 'episode' in guessDict else ''
         ep_title = ' - ' + guessDict['episode_title'] if 'episode_title' in guessDict  else ''
         return title + date + season + episode + ep_title
-    else:
-        printFailureMessage('Hmm. This show format is unknown to me. Report to https://github.com/arkalon76/salmiak/issues')
 
 
 namebuilder = {

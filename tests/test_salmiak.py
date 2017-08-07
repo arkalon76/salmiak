@@ -131,7 +131,7 @@ def test_rename_tvshows(test_tvshow_file, renamed_file, tmpdir):
     ('Married With Children - 0106 - Sixteen Years and What Do You Get.mkv', 'Married With Children - S1E6.mkv'),
     ('BBC.Life.2009.E02.Reptiles.and.Amphibians.1080p.BluRay.Remux.VC1.-HDME.mkv', 'BBC Life (2009) - E2 - Reptiles and Amphibians.mkv'),
     ('Stephen.Colbert.2017.04.21.Rosario.Dawson.720p.HDTV.x264-SORNY[rarbg].mkv', 'Stephen Colbert - 2017-04-21 - Rosario Dawson.mkv'),
-    ('Westworld.S01E04.1080p.AMZN.WEBRip.DD5.1.x264-FGT.mkv', 'Westworld - S1E4.mkv')
+    ('Westworld.S01E04.1080p.AMZN.WEBRip.DD5.1.x264-FGT.mkv', 'Westworld - S1E4.mkv'),
 ])
 
 
