@@ -99,3 +99,28 @@ def test_dryrun_rename_folder(test_folder, renamed_folder, tmpdir):
     salmiak.renamePath(str(tmpdir), str(test_folder))
     assert os.path.isdir(str(tmpdir) + '/' + renamed_folder) is False
     assert os.path.isdir(str(tmpdir) + '/' + test_folder) is True
+
+
+################
+# Test TVShows #
+################
+
+
+@pytest.mark.parametrize("test_tvshow_file, renamed_file", [
+    ('Last.Week.Tonight.with.John.Oliver.S04E13.720p.HBO.WEBRip.AAC2.0.H264-monkee[rarbg].mkv', 'Last Week Tonight with John Oliver - S4E13.mkv'),
+    ('Married With Children - 0106 - Sixteen Years and What Do You Get.mkv', 'Married With Children - S1E6.mkv'),
+    ('BBC.Life.2009.E02.Reptiles.and.Amphibians.1080p.BluRay.Remux.VC1.-HDME.mkv', 'BBC Life (2009) - E2 - Reptiles and Amphibians.mkv'),
+    ('Stephen.Colbert.2017.04.21.Rosario.Dawson.720p.HDTV.x264-SORNY[rarbg].mkv', 'Stephen Colbert - 2017-04-21 - Rosario Dawson.mkv'),
+    ('Westworld.S01E04.1080p.AMZN.WEBRip.DD5.1.x264-FGT.mkv', 'Westworld - S1E4.mkv')
+])
+
+
+def test_dryrun_rename_folder(test_tvshow_file, renamed_file, tmpdir):
+    ''' Testing that renaming a valid file actually moves it from one to the other.
+    '''
+    salmiak.DRYRUN = False
+    f1 = tmpdir.mkdir('download').join(test_tvshow_file)
+    f1.write('VideoContent')
+    salmiak.renameFile(str(tmpdir) + '/download', str(test_tvshow_file))
+    assert os.path.isfile(str(tmpdir) + '/download/' + renamed_file) is True
+    assert os.path.isfile(str(tmpdir) + '/download/' + test_tvshow_file) is False

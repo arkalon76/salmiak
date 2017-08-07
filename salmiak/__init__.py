@@ -126,6 +126,37 @@ def isValidPath(path):
             return False
 
 
+def buildPlexMovieName(guessDict):
+    return guessDict['title'] + ' (' + str(guessDict['year']) + ')'
+
+#  Stephen.Colbert.2017.04.21.Rosario.Dawson.720p.HDTV.x264-SORNY[rarbg].mkv
+def buildPlexTVShowName(guessDict):
+    if 'season' in guessDict:
+        return guessDict['title'] + ' - ' + 'S' + str(guessDict['season']) + 'E' + str(guessDict['episode'])
+    elif 'year' in guessDict:
+        title = guessDict['title']
+        year = ' (' + str(guessDict['year']) + ') - '
+        season = 'S' + str(guessDict['season']) if 'season' in guessDict else ''
+        episode = 'E' + str(guessDict['episode']) if 'episode' in guessDict else ''
+        ep_title = ' - ' + guessDict['episode_title'] if 'episode_title' in guessDict  else ''
+        return title + year + season + episode + ep_title
+    elif 'date' in guessDict:
+        title = guessDict['title'] + ' - '
+        date = str(guessDict['date'])
+        season = ' - ' + 'S' + str(guessDict['season']) if 'season' in guessDict else ''
+        episode = 'E' + str(guessDict['episode']) if 'episode' in guessDict else ''
+        ep_title = ' - ' + guessDict['episode_title'] if 'episode_title' in guessDict  else ''
+        return title + date + season + episode + ep_title
+    else:
+        printFailureMessage('Hmm. This show format is unknown to me. Report to https://github.com/arkalon76/salmiak/issues')
+
+
+namebuilder = {
+        'movie': buildPlexMovieName,
+        'episode': buildPlexTVShowName,
+}
+
+
 def renameFile(dir_path, file):
     """ Renames a file to match a standard Plex format { Title (year) }.
         If the Dry run flag is set then we will just print the text but not make the move.
@@ -138,10 +169,10 @@ def renameFile(dir_path, file):
 
     # Extract the extention of the file so we can pick the ones we want
     extension = os.path.splitext(file)[1].lower()
-    print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')' + extension)
-
+    myguess = guessit(file)
+    print('    ' + file + bcolors.OKGREEN + ' ==> ' + bcolors.ENDC + namebuilder[myguess['type']](myguess) + extension)
     if not DRYRUN:
-        new_name = guessit(file)['title'] + ' (' + str(guessit(file)['year']) + ')'
+        new_name = namebuilder[myguess['type']](myguess)
         src = dir_path + '/' + file
         dest = dir_path + '/' + new_name + extension
         os.rename(src, dest)
