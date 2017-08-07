@@ -1,5 +1,5 @@
 # Salmiak
-A very VERY simple tool to rename all files and folders so that they play nice with Plex.
+A very VERY simple tool to rename all files and folders so that they play nice with Plex
 
 ## Status
 ![Build Status](https://travis-ci.org/arkalon76/salmiak.svg?branch=master)
