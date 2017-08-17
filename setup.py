@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='salmiak',
-      version='0.3',
+      version='0.4',
       description='The easiest movie file renamer this side of github',
       long_description="Look, it's not very powerful, but it's simple. And sometimes that's enough",
       classifiers=[
