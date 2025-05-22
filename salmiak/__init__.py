@@ -96,7 +96,7 @@ def parseFiles(rootdir):
                 renamePath(dir_path, path)
             else:
                 # Let's assume this isn't a folder we are intrested in
-                printFailureMessage(file + ' <== Is this really a movie folder?')
+                printFailureMessage(path + ' <== Is this really a movie folder?')
 
 
 def isValidPath(path):
@@ -131,22 +131,36 @@ def buildPlexMovieName(guessDict):
 
 #  Stephen.Colbert.2017.04.21.Rosario.Dawson.720p.HDTV.x264-SORNY[rarbg].mkv
 def buildPlexTVShowName(guessDict):
-    if 'season' in guessDict:
-        return guessDict['title'] + ' - ' + 'S' + str(guessDict['season']) + 'E' + str(guessDict['episode'])
-    elif 'year' in guessDict:
+    if guessDict.get('title') == 'My Show':
+        print(f"SWEBOT DEBUG My Show: {guessDict}")
+    # If we have an episode title and a year, prioritize that structure.
+    # This handles cases where 'season' might be misidentified as the year.
+    if 'episode_title' in guessDict and 'year' in guessDict and 'episode' in guessDict:
         title = guessDict['title']
-        year = ' (' + str(guessDict['year']) + ') - '
-        season = 'S' + str(guessDict['season']) if 'season' in guessDict else ''
-        episode = 'E' + str(guessDict['episode']) if 'episode' in guessDict else ''
-        ep_title = ' - ' + guessDict['episode_title'] if 'episode_title' in guessDict  else ''
-        return title + year + season + episode + ep_title
+        year_str = ' (' + str(guessDict['year']) + ')'
+        episode_str = ' - E' + str(guessDict['episode']) # Standard Plex format for episode without season
+        # If guessit found a 'season' that is different from 'year', include it.
+        # Otherwise, it's likely the year was duplicated as season.
+        if 'season' in guessDict and guessDict['season'] != guessDict['year']:
+             episode_str = ' - S' + str(guessDict['season']) + 'E' + str(guessDict['episode'])
+        ep_title_str = ' - ' + guessDict['episode_title']
+        return title + year_str + episode_str + ep_title_str
+    elif 'season' in guessDict and 'episode' in guessDict: # Original first condition
+        return guessDict['title'] + ' - ' + 'S' + str(guessDict['season']) + 'E' + str(guessDict['episode'])
+    elif 'year' in guessDict: # Original second condition (now third)
+        title = guessDict['title']
+        year_str = ' (' + str(guessDict['year']) + ') - '
+        # season_str = 'S' + str(guessDict['season']) if 'season' in guessDict else '' # season would be already handled or not relevant if no episode_title
+        episode_str = 'E' + str(guessDict['episode']) if 'episode' in guessDict else ''
+        ep_title_str = ' - ' + guessDict['episode_title'] if 'episode_title' in guessDict  else '' # unlikely to hit if first block missed
+        return title + year_str + episode_str + ep_title_str # Simplified, as season part is tricky here without episode_title
     elif 'date' in guessDict:
         title = guessDict['title'] + ' - '
-        date = str(guessDict['date'])
-        season = ' - ' + 'S' + str(guessDict['season']) if 'season' in guessDict else ''
-        episode = 'E' + str(guessDict['episode']) if 'episode' in guessDict else ''
-        ep_title = ' - ' + guessDict['episode_title'] if 'episode_title' in guessDict  else ''
-        return title + date + season + episode + ep_title
+        date_str = str(guessDict['date'])
+        season_str = ' - ' + 'S' + str(guessDict['season']) if 'season' in guessDict else ''
+        episode_str = 'E' + str(guessDict['episode']) if 'episode' in guessDict else ''
+        ep_title_str = ' - ' + guessDict['episode_title'] if 'episode_title' in guessDict  else ''
+        return title + date_str + season_str + episode_str + ep_title_str
 
 
 namebuilder = {
