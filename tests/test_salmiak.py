@@ -314,28 +314,35 @@ def test_parseFiles_file_not_movie_or_episode_type_by_guessit(tmpdir, capsys):
 
 def test_parseFiles_renames_valid_movie_file(tmpdir, capsys):
     """Test parseFiles actually calls renameFile for a valid movie file."""
+    original_dryrun = salmiak.DRYRUN
     salmiak.DRYRUN = True  # Use dry run to avoid actual rename
-    test_filename = 'The.Matrix.1999.1080p.BluRay.mkv'
-    file_path = tmpdir.join(test_filename)
-    file_path.write('VideoContent')
-    
-    salmiak.parseFiles(str(tmpdir))
-    
-    captured = capsys.readouterr()
-    # Should show the rename output
-    assert 'The.Matrix.1999.1080p.BluRay.mkv' in captured.out
-    assert 'The Matrix (1999).mkv' in captured.out
-
+    try:
+        test_filename = 'The.Matrix.1999.1080p.BluRay.mkv'
+        file_path = tmpdir.join(test_filename)
+        file_path.write('VideoContent')
+        
+        salmiak.parseFiles(str(tmpdir))
+        
+        captured = capsys.readouterr()
+        # Should show the rename output
+        assert 'The.Matrix.1999.1080p.BluRay.mkv' in captured.out
+        assert 'The Matrix (1999).mkv' in captured.out
+    finally:
+        salmiak.DRYRUN = original_dryrun
 
 def test_parseFiles_renames_valid_movie_folder(tmpdir, capsys):
     """Test parseFiles actually calls renamePath for a valid movie folder."""
+    original_dryrun = salmiak.DRYRUN
     salmiak.DRYRUN = True  # Use dry run to avoid actual rename
-    test_foldername = 'Inception.2010.1080p.BluRay'
-    tmpdir.mkdir(test_foldername)
-    
-    salmiak.parseFiles(str(tmpdir))
-    
-    captured = capsys.readouterr()
-    # Should show the rename output
-    assert 'Inception.2010.1080p.BluRay' in captured.out
-    assert 'Inception (2010)' in captured.out
+    try:
+        test_foldername = 'Inception.2010.1080p.BluRay'
+        tmpdir.mkdir(test_foldername)
+        
+        salmiak.parseFiles(str(tmpdir))
+        
+        captured = capsys.readouterr()
+        # Should show the rename output
+        assert 'Inception.2010.1080p.BluRay' in captured.out
+        assert 'Inception (2010)' in captured.out
+    finally:
+        salmiak.DRYRUN = original_dryrun
