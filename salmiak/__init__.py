@@ -120,7 +120,7 @@ def isValidPath(path):
     else:
         foldername = os.path.basename(path)
         pathguess = guessit(foldername)
-        if re.match('^\W.*', foldername) is None and ('title' in pathguess) and ('year' in pathguess):
+        if re.match(r'^\W.*', foldername) is None and ('title' in pathguess) and ('year' in pathguess):
             return True
         else:
             return False
